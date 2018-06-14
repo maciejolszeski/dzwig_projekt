@@ -17,6 +17,16 @@ namespace Project5 {
 	using namespace System::Drawing;
 	using namespace std;
 	
+	Point crane, position;
+	bool malowac;
+	
+	struct circle {
+		int x, y, height, width;
+	};
+
+	circle C1, C2, C3, C4, R;
+	bool C1_catch, C2_catch, C3_catch, C4_catch;
+	
 	/// <summary>
 	/// Summary for MyForm
 	/// </summary>
@@ -162,8 +172,9 @@ namespace Project5 {
 			this->KeyPreview = true;
 			this->Margin = System::Windows::Forms::Padding(4);
 			this->Name = L"MyForm";
-			this->Text = L"DÅºwig";
+			this->Text = L"DŸwig";
 			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
+			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::MyForm_KeyDown);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
@@ -177,6 +188,183 @@ namespace Project5 {
 		
 	}
 
+
+private: System::Void pictureBox1_Paint(System::Object^  sender, System::Windows::Forms::PaintEventArgs^  e) {
+	if (malowac == false) {
+		position = Point(146, 150);
+		crane = Point(146, 50);
+
+		C1.x = 100;		C1.y = 300;		C1.height = 50;		C1.width = 50;
+		C2.x = 200;		C2.y = 300;		C2.height = 50;		C2.width = 50;
+		C3.x = 300;		C3.y = 300;		C3.height = 50;		C3.width = 50;
+		C4.x = 400;		C4.y = 300;		C4.height = 50;		C4.width = 50;
+		R.x = 470;		R.y = 300;		R.height = 50;		R.width = 50;
+	}
+	
+
+	Graphics^ g = e->Graphics;
+	g->DrawLine(System::Drawing::Pens::Orange, crane, position);
+	
+	g->DrawEllipse(System::Drawing::Pens::Red, C1.x, C1.y, C1.height, C1.width);
+	g->DrawEllipse(System::Drawing::Pens::Red, C2.x, C2.y, C2.height, C2.width);
+	g->DrawEllipse(System::Drawing::Pens::Red, C3.x, C3.y, C3.height, C3.width);
+	g->DrawEllipse(System::Drawing::Pens::Red, C4.x, C4.y, C4.height, C4.width);
+	g->DrawRectangle(System::Drawing::Pens::Blue, R.x ,R.y, R.height, R.width);
+	
+}
+
+private:
+	System::Void MyForm_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+	if (e->KeyCode == Keys::S)
+	{
+		if (position.Y < 300) {
+			position.Y += 2;
+			if (C1_catch == true) {
+				C1.y += 2;
+			}
+			else if (C2_catch == true) {
+				C2.y += 2;
+			}
+			else if (C3_catch == true) {
+				C3.y += 2;
+			}
+			else if (C4_catch == true) {
+				C4.y += 2;
+			}
+			malowac = true;
+			this->Refresh();
+		}
+	}
+
+	if (e->KeyCode == Keys::W)
+	{
+		if (position.Y > 100) {
+			position.Y -= 2;
+			if (C1_catch == true) {
+				C1.y -= 2;
+			}
+			else if (C2_catch == true) {
+				C2.y -= 2;
+			}
+			else if (C3_catch == true) {
+				C3.y -= 2;
+			}
+			else if (C4_catch == true) {
+				C4.y -= 2;
+			}
+			malowac = true;
+			this->Refresh();
+		}
+	}
+
+	if (e->KeyCode == Keys::D)
+	{
+		if (position.X < 550) {
+			position.X += 2;
+			crane.X += 2;
+			if (C1_catch == true) {
+				C1.x += 2;
+			}
+			else if (C2_catch == true) {
+				C2.x += 2;
+			}
+			else if (C3_catch == true) {
+				C3.x += 2;
+			}
+			else if (C4_catch == true) {
+				C4.x += 2;
+			}
+			malowac = true;
+			this->Refresh();
+		}
+	}
+
+	if (e->KeyCode == Keys::A)
+	{
+		if (position.X > 50) {
+			position.X -= 2;
+			crane.X -= 2;
+			if (C1_catch == true) {
+				C1.x -= 2;
+			}
+			else if (C2_catch == true) {
+				C2.x -= 2;
+			}
+			else if (C3_catch == true) {
+				C3.x -= 2;
+			}
+			else if (C4_catch == true) {
+				C4.x -= 2;
+			}
+			malowac = true;
+			this->Refresh();
+		}
+	}
+	
+}
+
+private: System::Void MyForm_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e) {
+	        // Stop the character from being entered into the control since it is non-numerical.
+}
+
+private: System::Void button5_Click(System::Object^  sender, System::EventArgs^  e) {										//catch
+	if (position.X >= C1.x && position.X <= C1.x + (C1.width) && position.Y >= C1.y && position.Y <= C1.y + (C1.height)) {
+		C1_catch = true;
+		this->Refresh();
+	}
+	if (position.X >= C2.x && position.X <= C2.x + (C2.width) && position.Y >= C2.y && position.Y <= C2.y + (C2.height)) {
+		C2_catch = true;
+		this->Refresh();
+	}
+	if (position.X >= C3.x && position.X <= C3.x + (C3.width) && position.Y >= C3.y && position.Y <= C3.y + (C3.height)) {
+		C3_catch = true;
+		this->Refresh();
+	}
+	if (position.X >= C4.x && position.X <= C4.x + (C4.width) && position.Y >= C4.y && position.Y <= C4.y + (C4.height)) {
+		C4_catch = true;
+		this->Refresh();
+	}
+}
+private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {										//drop
+	C1_catch = false;
+	C2_catch = false;
+	C3_catch = false;
+	C4_catch = false;
+	
+	/*
+	int a, b, c, d, f;
+	b = C1.x + (C1.width);
+	c = C2.x + (C2.width);
+	d = C3.x + (C3.width);
+	f = C4.x + (C4.width);
+	if (C1_catch == true) {
+		a = C1.y + (C1.height);
+		if (a <= C2.y && a <= C3.y && a <= C4.y && C1.x <= C2.x && C1.x >= c && C1.x <= C3.x && C1.x >= d && C1.x <= C4.x && C1.x >= f)
+			C1_catch = false;
+		
+	}
+	else if (C2_catch == true) {
+		a = C2.y + (C2.height);
+		
+		if (a <= C2.y && a <= C3.y && a <= C4.y && C1.x <= C2.x && C1.x >= b && C1.x <= C3.x && C1.x >= d && C1.x <= C4.x && C1.x >= f)
+		C2_catch = false;
+	}
+
+	else if (C3_catch == true) {
+		a = C3.y + (C3.height);
+		
+		if (a <= C2.y && a <= C3.y && a <= C4.y && C1.x <= C2.x && C1.x >= c && C1.x <= C3.x && C1.x >= b && C1.x <= C4.x && C1.x >= f)
+		C3_catch = false;
+	}
+
+	else if (C4_catch == true) {
+		a = C4.y + (C4.height);
+		if (a <= C2.y && a <= C3.y && a <= C4.y && C1.x <= C2.x && C1.x >= c && C1.x <= C3.x && C1.x >= d && C1.x <= C4.x && C1.x >= b)
+		C4_catch = false;
+		
+	}
+	*/
+}
 
 };
 };
